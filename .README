@@ -1,0 +1,7 @@
+#Add migration
+
+dotnet ef migrations add ChangeTransactionColumns -s src/FinancialControl.Services.Api/FinancialControl.Services.Api.csproj -c MainContext --project .\src\FinancialControl.Infra.Data\FinancialControl.Infra.Data.csproj
+
+
+#Update
+dotnet ef database update -s src/FinancialControl.Services.Api/FinancialControl.Services.Api.csproj -c MainContext

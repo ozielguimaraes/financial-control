@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FinancialControl.Domain\FinancialControl.Domain.csproj" />
+    <ProjectReference Include="..\FinancialControl.Domain.Business\FinancialControl.Domain.Business.csproj" />
+    <ProjectReference Include="..\FinancialControl.Infra.Data\FinancialControl.Infra.Data.csproj" />
+    <ProjectReference Include="..\FinancialControl.Infra.CrossCutting.Security.Shared\FinancialControl.Infra.CrossCutting.Security.Shared.csproj" />
+    <ProjectReference Include="..\FinancialControl.Infra.CrossCutting.Security\FinancialControl.Infra.CrossCutting.Security.csproj" />
+  </ItemGroup>
+
+</Project>
