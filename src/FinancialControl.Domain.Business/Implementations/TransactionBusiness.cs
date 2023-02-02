@@ -42,8 +42,8 @@ namespace FinancialControl.Domain.Business.Implementations
             if (request.TransactionType is null)
                 throw new ValidationException("Campo Tipo Conta é obrigatório.");
 
-            if (request.TransactionType is null)
-                throw new ValidationException("Campo Tipo Conta é obrigatório.");
+            if (Enum.IsDefined(typeof(Domain.Business.Requests.Transaction.TransactionType), request.TransactionType))
+                throw new ValidationException("Campo Tipo Conta é inválido.");
 
             var transaction = new Transaction
             {
@@ -62,8 +62,42 @@ namespace FinancialControl.Domain.Business.Implementations
 
         public async Task<UpdateTransactionResponse> Update(UpdateTransactionRequest request)
         {
-            //TODO Validate
-            var transaction = new Transaction();
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new ValidationException("Campo Nome é obrigatório.");
+
+            if (request.Value > 0)
+                throw new ValidationException("Campo Valor é obrigatório.");
+
+            if (request.Value is null)
+                throw new ValidationException("Campo Valor é inválido.");
+
+            if (request.CategoryId is null)
+                throw new ValidationException("Campo Categoria é obrigatório.");
+
+            if (request.CategoryId > 0)
+                throw new ValidationException("Campo Categoria é inválido.");
+
+            if (request.CashierAccountId is null)
+                throw new ValidationException("Campo Conta é obrigatório.");
+
+            if (request.CashierAccountId > 0)
+                throw new ValidationException("Campo Conta é inválido.");
+
+            if (request.TransactionType is null)
+                throw new ValidationException("Campo Tipo Conta é obrigatório.");
+
+            if (Enum.IsDefined(typeof(Domain.Business.Requests.Transaction.TransactionType), request.TransactionType))
+                throw new ValidationException("Campo Tipo Conta é inválido.");
+
+            var transaction = new Transaction
+            {
+                Name = request.Name,
+                Value = request.Value.Value,
+                Receipt = request.Receipt,
+                TransactionType = (Entities.TransactionType)request.TransactionType.Value,
+                CategoryId = request.CategoryId.Value,
+                CashierAccountId = request.CashierAccountId.Value
+            };
             var result = await _transactionService.Update(transaction);
             return new UpdateTransactionResponse(result.TransactionId, result.Name);
         }
@@ -71,13 +105,20 @@ namespace FinancialControl.Domain.Business.Implementations
         public async Task<List<TransactionResponse>> GetAll()
         {
             var result = _transactionService.All();
-            return await Task.FromResult(result.Select(x => new TransactionResponse(x.TransactionId, x.Name)).ToList());
+            return await Task.FromResult(result.Select(x => ToResponse(x)).ToList());
         }
 
         public async Task<TransactionResponse> GetById(long transactionId)
         {
             var result = await _transactionService.GetById(transactionId);
-            return new TransactionResponse(result.TransactionId, result.Name);
+            return ToResponse(result);
         }
+
+        private TransactionResponse ToResponse(Transaction entity) => new TransactionResponse(transactionId: entity.TransactionId,
+            name: entity.Name,
+            value: entity.Value,
+            transactionType: (Requests.Transaction.TransactionType)entity.TransactionType,
+            categoryId: entity.CategoryId,
+            cashierAccountId: entity.CashierAccountId);
     }
 }

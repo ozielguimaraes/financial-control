@@ -1,17 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using FinancialControl.Domain.Business.Responses.User;
+﻿using FinancialControl.Domain.Business.Interfaces;
 using FinancialControl.Domain.Business.Requests.User;
-using FinancialControl.Domain.Business.Interfaces;
+using FinancialControl.Domain.Business.Responses.User;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialControl.Services.Api.Controllers
 {
@@ -22,8 +13,8 @@ namespace FinancialControl.Services.Api.Controllers
         private readonly IUserBusiness _userBusiness;
 
         public UserController(
-            ILogger<UserController> logger, 
-            IHttpContextAccessor httpContextAccessor, 
+            ILogger<UserController> logger,
+            IHttpContextAccessor httpContextAccessor,
             IUserBusiness userBusiness
             ) : base(logger)
         {

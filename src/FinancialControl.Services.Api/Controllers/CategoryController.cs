@@ -78,7 +78,7 @@ namespace FinancialControl.Services.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{search:alpha}")]
+        [Route("search/{search:alpha}")]
         [ProducesResponseType(typeof(CategoryResponse[]), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<ValidationFailure>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Exception), StatusCodes.Status500InternalServerError)]

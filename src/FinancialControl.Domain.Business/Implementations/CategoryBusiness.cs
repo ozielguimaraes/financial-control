@@ -39,7 +39,9 @@ namespace FinancialControl.Domain.Business.Implementations
 
             var result = await _categoryService.Update(new Category
             {
-                Name = request.Name
+                Name = request.Name,
+                CategoryId = request.CategoryId,
+                SubCategoryId = request.SubCategoryId
             });
             return new UpdateCategoryResponse(result.CategoryId, result.Name);
         }

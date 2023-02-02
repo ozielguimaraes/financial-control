@@ -1,17 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using FinancialControl.Domain.Business.Responses.CashierAccount;
+﻿using FinancialControl.Domain.Business.Interfaces;
 using FinancialControl.Domain.Business.Requests.CashierAccount;
-using FinancialControl.Domain.Business.Interfaces;
+using FinancialControl.Domain.Business.Responses.CashierAccount;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FinancialControl.Services.Api.Controllers
 {
@@ -22,8 +13,8 @@ namespace FinancialControl.Services.Api.Controllers
         private readonly ICashierAccountBusiness _cashierAccountBusiness;
 
         public CashierAccountController(
-            ILogger<CashierAccountController> logger, 
-            IHttpContextAccessor httpContextAccessor, 
+            ILogger<CashierAccountController> logger,
+            IHttpContextAccessor httpContextAccessor,
             ICashierAccountBusiness cashierAccountBusiness
             ) : base(logger)
         {
@@ -86,6 +77,26 @@ namespace FinancialControl.Services.Api.Controllers
             catch (Exception ex)
             {
                 var message = "Error to update CashierAccount";
+                Logger.LogError(ex, message);
+                return InternalServerError(ex, message);
+            }
+        }
+
+        [HttpGet]
+        [Route("search/{search:alpha}")]
+        [ProducesResponseType(typeof(CashierAccountResponse[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ValidationFailure>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Exception), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Filter([FromBody] string search)
+        {
+            try
+            {
+                Logger.LogInformation($"Method: {nameof(Filter)} - GET");
+                return ResultWhenSearching(await _cashierAccountBusiness.Filter(search));
+            }
+            catch (Exception ex)
+            {
+                var message = $"Error filter CashierAccount, parameter -> {search}";
                 Logger.LogError(ex, message);
                 return InternalServerError(ex, message);
             }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FinancialControl.Domain.Business.Requests.Cashier
+﻿namespace FinancialControl.Domain.Business.Requests.Cashier
 {
     public class CreateCashierRequest
     {
@@ -8,4 +6,3 @@ namespace FinancialControl.Domain.Business.Requests.Cashier
         public string Description { get; set; }
     }
 }
-

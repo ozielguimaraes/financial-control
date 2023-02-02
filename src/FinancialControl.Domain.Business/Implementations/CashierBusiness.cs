@@ -3,6 +3,7 @@ using FinancialControl.Domain.Business.Requests.Cashier;
 using FinancialControl.Domain.Business.Responses.Cashier;
 using FinancialControl.Domain.Entities;
 using FinancialControl.Domain.Interfaces.Services;
+using FluentValidation;
 
 namespace FinancialControl.Domain.Business.Implementations
 {
@@ -17,9 +18,9 @@ namespace FinancialControl.Domain.Business.Implementations
 
         public async Task<CreateCashierResponse> Create(CreateCashierRequest request)
         {
-            if (request.Name is null) throw new ArgumentNullException(nameof(request.Name));
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new ValidationException("Campo Nome é obrigatório.");
 
-            //TODO Validate
             var cashier = new Cashier
             {
                 Name = request.Name,
@@ -33,8 +34,18 @@ namespace FinancialControl.Domain.Business.Implementations
 
         public async Task<UpdateCashierResponse> Update(UpdateCashierRequest request)
         {
-            //TODO Validate
-            var cashier = new Cashier();
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new ValidationException("Campo Nome é obrigatório.");
+
+            if (request.CashierId == 0)
+                throw new ValidationException("Campo Id é obrigatório.");
+
+            var cashier = new Cashier
+            {
+                Name = request.Name,
+                CashierId = request.CashierId,
+                Description = request.Description
+            };
             var result = await _cashierService.Update(cashier);
             return new UpdateCashierResponse(result.CashierId, result.Name);
         }
