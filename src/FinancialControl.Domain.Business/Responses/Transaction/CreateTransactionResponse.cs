@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FinancialControl.Domain.Business.Responses.Transaction
+﻿namespace FinancialControl.Domain.Business.Responses.Transaction
 {
     public class CreateTransactionResponse : BaseResponse
     {
@@ -12,6 +10,5 @@ namespace FinancialControl.Domain.Business.Responses.Transaction
 
         public long TransactionId { get; private set; }
         public string Name { get; private set; }
-        
     }
 }

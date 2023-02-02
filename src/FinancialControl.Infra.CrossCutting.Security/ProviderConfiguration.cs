@@ -21,8 +21,8 @@ namespace FinancialControl.Infra.CrossCutting.Security
         public Action<DbContextOptionsBuilder> SqlServer =>
             options => options.UseSqlServer(_connectionString, sql => sql.MigrationsAssembly(MigrationAssembly));
 
-        //public Action<DbContextOptionsBuilder> MySql =>
-        //     options => options.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString), sql => sql.MigrationsAssembly(MigrationAssembly));
+        public Action<DbContextOptionsBuilder> MySql =>
+             options => options.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString), sql => sql.MigrationsAssembly(MigrationAssembly));
 
         public Action<DbContextOptionsBuilder> Postgre =>
              options =>
